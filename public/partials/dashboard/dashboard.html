@@ -1,4 +1,42 @@
+<div ng-include="navUrl"></div>
+
 <div ng-controller="dashboardCtrl">
 
 </div>
-<h1>Dashboard</h1>
+<div class="container-fluid" ng-controller="noteCtrl">
+
+    <div class="col-md-3 col">
+        <h3>Notes</h3>
+        <button type="button" class="btn btn-primary" ng-click="newNote()">New</button>
+
+        <ul ng-repeat="note in notes">
+
+        </ul>
+    </div>
+    <div class="col-md-9 col">
+        <h3>Note</h3>
+    </div>
+
+</div>
+
+
+
+<script type="text/ng-template" id="newNoteModal">
+    <div class="modal-header">
+        <h3 class="modal-title">New Note</h3>
+    </div>
+    <form ng-submit="createNote(note)">
+    <div class="modal-body">
+
+        <label for="note-name">Name:</label> <input type="text" id="note-name" required ng-model="note.name" placeholder="Enter note name">
+        <label for="note-desc">Description:</label> <textarea required id="note-desc" placeholder="Enter description (optional)" ng-model="note.description"></textarea>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Save Note</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+    </form>
+</script>
+
+
+

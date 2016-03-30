@@ -1,4 +1,4 @@
-app.service('sessionService', function($window,jwtHelper){
+app.service('SessionService', function($window,jwtHelper){
 
     this.setLoggedIn = function(value){
         $window.localStorage.setItem('token',value);
@@ -8,6 +8,7 @@ app.service('sessionService', function($window,jwtHelper){
         try{
             var token = $window.localStorage.getItem('token');
             if(token && !jwtHelper.isTokenExpired(token) && jwtHelper.decodeToken(token).id){
+
                 return true;
             }
         }catch(err){
@@ -17,6 +18,7 @@ app.service('sessionService', function($window,jwtHelper){
     };
 
     this.logout = function(){
+        console.log('logout');
         $window.localStorage.clear();
     }
 });

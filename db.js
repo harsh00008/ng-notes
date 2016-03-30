@@ -14,7 +14,6 @@ var sequelize = new Sequelize('app_db','root','',{
 var User = sequelize.define('user',{
     userid:{
         type: Sequelize.INTEGER,
-        field: 'user_id',
         primaryKey: true,
         autoIncrement: true
     },
@@ -31,7 +30,10 @@ var User = sequelize.define('user',{
     token:{
         type: Sequelize.STRING
     },
-    expiry:{
+    issuedAt:{
+        type: Sequelize.INTEGER
+    },
+    expiryAt:{
         type: Sequelize.INTEGER
     }
 });

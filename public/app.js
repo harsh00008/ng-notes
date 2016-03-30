@@ -24,9 +24,10 @@ app.config(function($stateProvider, $urlRouterProvider){
 
 });
 
-app.run(function($state, $rootScope, sessionService){
+app.run(function($state, $rootScope,$http, $window, SessionService){
+    $http.defaults.headers.common.Authorization = $window.localStorage.getItem('token');
     $rootScope.$on('$stateChangeStart', function(event, currentRoute, previousRoute){
-        if(!sessionService.isLoggedIn() && currentRoute.authentication){
+        if(!SessionService.isLoggedIn() && currentRoute.authentication){
             event.preventDefault();
             $state.go('login');
         }
@@ -34,29 +35,5 @@ app.run(function($state, $rootScope, sessionService){
 });
 
 
-app.controller('homeCtrl', function($scope, sessionService){
-    sessionService.logout();
-});
-
-app.controller('loginCtrl', function($scope, $http, loginService){
-    $scope.error = false;
-    $scope.login = function(user){
-        loginService.login(user, $scope);
-    };
-});
-
-app.controller('registerCtrl', function($scope){
-    sessionService.logout();
-});
 
 
-app.controller('dashboardCtrl', function($scope, $state, sessionService){
-    console.log('sessionsService '+sessionService.isLoggedIn());
-});
-
-app.controller('navbarCtrl', function($scope, sessionService){
-    $scope.isUserLoggedIn = sessionService.isLoggedIn();
-    console.log($scope.isUserLoggedIn);
-
-
-});

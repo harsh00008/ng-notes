@@ -1,15 +1,3 @@
-<h1>Login</h1>
-<div ng-controller="loginCtrl">
+<div ng-include src="'./partials/common/header.html'"></div>
 
-<div ng-show="error" class="alert alert-danger" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
-  Invalid login
-</div>
-  <form ng-submit="login(login)">
-      Email: <input type="email" required ng-model="login.email">
-      Password: <input type="password" ng-model="login.password">
-      <input type="submit" value="Login">
-  </form>
-
-</div>
+<div login-form></div>

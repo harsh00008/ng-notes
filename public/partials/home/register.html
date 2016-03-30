@@ -1,7 +1,18 @@
-
+<div ng-include src="'./partials/common/header.html'"></div>
 
     <h1>Register</h1>
     <div ng-controller="registerCtrl">
+        <div ng-show="error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            {{error}}
+        </div>
+
+        <div ng-show="message" class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Message:</span>
+            {{message}}
+        </div>
 
         <form ng-submit="register(user)">
             Email: <input type="email" required ng-model="user.email">

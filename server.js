@@ -22,8 +22,6 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
 
-
-
 app.post('/api/v1/login', function(req, res){
     var sess = req.session;
     var email = req.body.email;
@@ -39,45 +37,82 @@ app.post('/api/v1/login', function(req, res){
             var token = '';
             if(!user.token){
                 token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
+                user.updateAttributes({
+                    token: token
+                });
             }else{
                 token = user.token;
             }
             res.setHeader('Content-Type','application/json');
-            res.json(JSON.stringify({token: token}));
+            res.status(200).send({token: token});
         }else{
-            sess.user = null;
-            res.sendStatus(400);
+            res.status(400).send({error: 'Invalid login. Email or password do not match.'});
         }
-        res.end();
     });
 });
 
 app.post('/api/v1/register', function(req,res){
-
     var email = req.body.email;
     var pass = req.body.password;
     var name = req.body.name;
-    var Note = db.getNote();
     if(email && pass && name){
+
         User.create({
-            email : email,
-            password: pass,
-            name: name
-        }).then(function(user){
-            if(user){
-                res.sendStatus(200);
-            }else{
-                sess.user = null;
-                res.sendStatus(400);
-            }
-            res.end();
-        });
+                email : email,
+                password: pass,
+                name: name
+            }).then(function(user){
+                if(user){
+                    res.status(200).send({message: 'User successfully registered!'});
+                }else{
+                    console.log('Got registration reques3');
+                    res.status(400).send({error: 'Could not register the user'});
+                }
+            }).catch(function(err){
+                res.status(400).send({error: 'Could not register the user. Already exists. Try some other email'});
+            });
+
     }else{
-        res.sendStatus(400);
-        res.end();
+        res.send(400).send({error: 'please complete the registration form'});
     }
 });
 
+app.get('/api/v1/notes', function(req,res){
+
+    var token = req.headers.authorization;
+    console.log('token: '+ token);
+    try {
+        var decoded = jwt.verify(token, secret);
+        var userId = decoded.id;
+        var email = decoded.email;
+        User.findOne({
+            where: {
+                email: email,
+                userid: userId
+            }
+        }).then(function(user){
+            if(user){
+                console.log(JSON.stringify(user));
+                Note.find({
+                    where: {
+                        userUserId: user.userid
+                    }
+                }).then(function(notes){
+                    if(notes){
+                        console.log(notes);
+                        res.json({data: notes});
+                    }else{
+                        res.status(204).send();
+                    }
+                });
+            }else{
+                res.status(400).send("Invalid request");
+            }
+        });
+    } catch(err) {
+        res.status(400).send("Invalid token");
+    }
+});
 
 app.listen(port, function(){
     console.log('Server started on port ' + port);
