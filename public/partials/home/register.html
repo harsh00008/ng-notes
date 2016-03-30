@@ -1,0 +1,13 @@
+
+
+    <h1>Register</h1>
+    <div ng-controller="registerCtrl">
+
+        <form ng-submit="register(user)">
+            Email: <input type="email" required ng-model="user.email">
+            Password: <input type="password" required ng-model="user.password">
+            Name: <input type="text" required ng-model="user.name">
+            <input type="submit" value="Register">
+        </form>
+
+    </div>
