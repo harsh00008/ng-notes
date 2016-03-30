@@ -1,4 +1,4 @@
-var app = angular.module('noteApp',['ui.router', 'ui.bootstrap']);
+var app = angular.module('noteApp',['ui.router', 'ui.bootstrap','angular-jwt']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     $urlRouterProvider.otherwise('/');
@@ -15,28 +15,48 @@ app.config(function($stateProvider, $urlRouterProvider){
         .state('register', {
             url: '/register',
             templateUrl: 'partials/home/register.html'
+        })
+        .state('dashboard',{
+            url : '/dashboard',
+            templateUrl: 'partials/dashboard/dashboard.html',
+            authentication: true
         });
 
 });
 
-app.controller('homeCtrl', function($scope){
-    $scope.message = 'Hello world';
+app.run(function($state, $rootScope, sessionService){
+    $rootScope.$on('$stateChangeStart', function(event, currentRoute, previousRoute){
+        if(!sessionService.isLoggedIn() && currentRoute.authentication){
+            event.preventDefault();
+            $state.go('login');
+        }
+    });
 });
 
-app.controller('loginCtrl', function($scope, $http){
+
+app.controller('homeCtrl', function($scope, sessionService){
+    sessionService.logout();
+});
+
+app.controller('loginCtrl', function($scope, $http, loginService){
+    $scope.error = false;
     $scope.login = function(user){
-        var json = JSON.stringify({
-            email: user.email,
-            password: user.password
-        });
-        $http.post('/login', json).then(function(data){
-            console.log(data);
-        }, function(err){
-            console.log('Error: ' + err);
-        });
-    }
+        loginService.login(user, $scope);
+    };
 });
 
 app.controller('registerCtrl', function($scope){
+    sessionService.logout();
+});
+
+
+app.controller('dashboardCtrl', function($scope, $state, sessionService){
+    console.log('sessionsService '+sessionService.isLoggedIn());
+});
+
+app.controller('navbarCtrl', function($scope, sessionService){
+    $scope.isUserLoggedIn = sessionService.isLoggedIn();
+    console.log($scope.isUserLoggedIn);
+
 
 });

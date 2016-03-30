@@ -19,13 +19,20 @@ var User = sequelize.define('user',{
         autoIncrement: true
     },
     email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
     },
     name: {
         type: Sequelize.STRING
     },
     password: {
         type: Sequelize.STRING
+    },
+    token:{
+        type: Sequelize.STRING
+    },
+    expiry:{
+        type: Sequelize.INTEGER
     }
 });
 
@@ -43,13 +50,8 @@ var Note = sequelize.define('note',{
 
 Note.belongsTo(User);
 
-sequelize.sync().then(function(){
-    return User.create({
-        email: 'user@mail.com',
-        password: 'password',
-        name: 'Harsh Malewar'
-    });
-});
+sequelize.sync();
+
 
 //export
 module.exports = {

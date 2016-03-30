@@ -3,6 +3,9 @@ var session = require('express-session');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var db = require('./db');
+var jwt = require('jsonwebtoken');
+var api = require('./routes/routes');
+var secret = 'mysecret';
 
 //initialize database stuff
 var Sequelize = db.getSequelize();
@@ -10,24 +13,18 @@ var User = db.getUser();
 var Note = db.getNote();
 
 var app = express();
-var port = process.env.PORT || 8888;
+var port = process.env.PORT || 8000;
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(session({
-    secret :'abcjsofekfps',
-    saveUninitialized: true,
-    resave: true
-}));
 
+//use this directory for angular
 app.use(express.static(__dirname + '/public'));
 
 
-app.get('/', function(req, res){
-    res.end();
-});
 
-app.post('/login', function(req, res){
+
+app.post('/api/v1/login', function(req, res){
     var sess = req.session;
     var email = req.body.email;
     var pass = req.body.password;
@@ -39,12 +36,14 @@ app.post('/login', function(req, res){
         }
     }).then(function(user){
         if(user){
-            sess.user = {
-                name: user.name,
-                email: user.email,
-                id: user.userid
-            };
-            res.sendStatus(200);
+            var token = '';
+            if(!user.token){
+                token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
+            }else{
+                token = user.token;
+            }
+            res.setHeader('Content-Type','application/json');
+            res.json(JSON.stringify({token: token}));
         }else{
             sess.user = null;
             res.sendStatus(400);
@@ -53,11 +52,7 @@ app.post('/login', function(req, res){
     });
 });
 
-app.get('/tp',function(req, res){
-    res.json(req.session.user);
-});
-
-app.post('/register', function(req,res){
+app.post('/api/v1/register', function(req,res){
 
     var email = req.body.email;
     var pass = req.body.password;
