@@ -80,7 +80,6 @@ app.post('/api/v1/register', function(req,res){
 app.get('/api/v1/notes', function(req,res){
 
     var token = req.headers.authorization;
-    console.log('token: '+ token);
     try {
         var decoded = jwt.verify(token, secret);
         var userId = decoded.id;
@@ -93,14 +92,14 @@ app.get('/api/v1/notes', function(req,res){
         }).then(function(user){
             if(user){
                 console.log(JSON.stringify(user));
-                Note.find({
+                Note.findAll({
                     where: {
-                        userUserId: user.userid
-                    }
+                        userId: user.userid
+                    },
+                    attribute:['id','name']
                 }).then(function(notes){
                     if(notes){
-                        console.log(notes);
-                        res.json({data: notes});
+                        res.json(notes);
                     }else{
                         res.status(204).send();
                     }
@@ -108,6 +107,80 @@ app.get('/api/v1/notes', function(req,res){
             }else{
                 res.status(400).send("Invalid request");
             }
+        });
+    } catch(err) {
+        res.status(400).send("Invalid token");
+    }
+});
+
+app.put('/api/v1/notes/:id', function(req, res){
+    var noteId = req.params.id;
+    var token = req.headers.authorization;
+    try {
+        var decoded = jwt.verify(token, secret);
+        var userId = decoded.id;
+        var email = decoded.email;
+        User.findOne({
+            where: {
+                email: email,
+                userid: userId
+            }
+        }).then(function(user){
+            if(user){
+                return user;
+            }else{
+                res.status(400).send("Invalid request");
+            }
+        }).then(function(user){
+            Note.findOne({
+                id: noteId
+            }).then(function(note){
+                if(note){
+                    note.updateAttributes({
+
+                    });
+                    res.status(200).send();
+                }else{
+                    res.status(400).send('Could not create note. Try again!');
+                }
+            });
+        });
+    } catch(err) {
+        res.status(400).send("Invalid token");
+    }
+});
+
+app.post('/api/v1/notes', function(req, res){
+    var token = req.headers.authorization;
+    try {
+        var decoded = jwt.verify(token, secret);
+        var userId = decoded.id;
+        var email = decoded.email;
+        User.findOne({
+            where: {
+                email: email,
+                userid: userId
+            }
+        }).then(function(user){
+            if(user){
+                return user;
+            }else{
+                res.status(400).send("Invalid request");
+            }
+        }).then(function(user){
+            Note.create({
+                name: 'Untitled',
+                description: 'No description',
+                note: 'Click to edit me',
+                userId: user.userid
+            }).then(function(note){
+                if(note){
+                    console.log('NOTE: ' + JSON.stringify(note));
+                    res.json(note);
+                }else{
+                    res.status(400).send('Could not create note. Try again!');
+                }
+            });
         });
     } catch(err) {
         res.status(400).send("Invalid token");

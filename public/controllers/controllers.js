@@ -16,11 +16,13 @@ app.controller('homeCtrl', function($scope, SessionService){
     SessionService.logout();
 });
 
-app.controller('loginCtrl', function($scope, $http, LoginService){
+app.controller('loginCtrl', function($scope, $http, LoginService, SessionService){
     $scope.error = null;
+    SessionService.logout();
     $scope.login = function(user){
         LoginService.login(user, $scope);
     };
+
 });
 
 app.controller('registerCtrl', function($scope, SessionService, LoginService){
@@ -40,27 +42,30 @@ app.controller('navbarCtrl', function($scope, SessionService){
     console.log($scope.isUserLoggedIn);
 });
 
-app.controller('noteCtrl', function($scope, $uibModal, $log, NotesService){
-
-
-    $scope.notes = NotesService.getAllNotes();
-
-    $scope.newNote = function (size) {
-
-        var modalInstance = $uibModal.open({
-            animation: $scope.animationsEnabled,
-            templateUrl: 'newNoteModal',
-            controller: function($scope, $uibModalInstance){
-                $scope.createNote = function(note){
-                    console.log(note);
-                };
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
-            }
-        });
-
+app.controller('noteCtrl', function($scope, NotesService){
+    $scope.note = {
+        id: 0,
+        title: '',
+        text: ''
     };
+
+    $scope.notes= [];
+    NotesService.getAllNotes($scope);
+
+    $scope.showNote = function(note){
+        $scope.note.id = note.id;
+        $scope.note.text = note.note;
+        $scope.note.title = note.name;
+    };
+
+    $scope.newNote = function(){
+        NotesService.newNote();
+        NotesService.getAllNotes($scope);
+    };
+
+    $scope.saveNote = function(note){
+        console.log(note);
+    }
 
 
 

@@ -50,7 +50,7 @@ var Note = sequelize.define('note',{
     }
 });
 
-Note.belongsTo(User);
+Note.belongsTo(User,{foreignKey: 'userId'});
 
 sequelize.sync();
 

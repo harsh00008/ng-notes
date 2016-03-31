@@ -5,13 +5,16 @@
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.15.0",
-    "express-session": "^1.13.0",
-    "express": "^4.13.4",
     "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "morgan": "^1.7.0",
+    "multer": "^1.1.0",
     "mysql": "^2.10.2",
-    "sequelize": "^3.20.0",
-    "multer": "^1.1.0"
+    "node-sass": "^3.4.2",
+    "sass": "^0.5.0",
+    "scss": "^0.2.4",
+    "sequelize": "^3.20.0"
   },
   "devDependencies": {},
   "scripts": {

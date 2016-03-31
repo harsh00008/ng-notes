@@ -1,4 +1,4 @@
-var app = angular.module('noteApp',['ui.router', 'ui.bootstrap','angular-jwt']);
+var app = angular.module('noteApp',['ui.router', 'ui.bootstrap','angular-jwt','angular-meditor','mp.deepBlur']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     $urlRouterProvider.otherwise('/');
@@ -20,7 +20,11 @@ app.config(function($stateProvider, $urlRouterProvider){
             url : '/dashboard',
             templateUrl: 'partials/dashboard/dashboard.html',
             authentication: true
+        })
+        .state('logout',{
+            url: '/login'
         });
+
 
 });
 
