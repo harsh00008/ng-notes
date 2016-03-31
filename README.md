@@ -1,2 +1,17 @@
 # ng-notes
-Simple experimental project in node, express, angular and mysql
+This is a simple demo purpose app for quick notes
+
+Requirements:
+- node
+- mysql database
+
+To run the application, first install all the dependencies
+```
+npm install
+```
+
+To run the server
+```
+node server.js
+```
+

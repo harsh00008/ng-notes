@@ -1,4 +1,4 @@
-var app = angular.module('noteApp',['ui.router', 'ui.bootstrap','angular-jwt','angular-meditor','mp.deepBlur']);
+var app = angular.module('noteApp',['ui.router', 'ui.bootstrap','angular-jwt','angular-meditor','mp.deepBlur','angular-md5']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     $urlRouterProvider.otherwise('/');
@@ -29,7 +29,6 @@ app.config(function($stateProvider, $urlRouterProvider){
 });
 
 app.run(function($state, $rootScope,$http, $window, SessionService){
-    $http.defaults.headers.common.Authorization = $window.localStorage.getItem('token');
     $rootScope.$on('$stateChangeStart', function(event, currentRoute, previousRoute){
         if(!SessionService.isLoggedIn() && currentRoute.authentication){
             event.preventDefault();

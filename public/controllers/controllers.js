@@ -13,18 +13,20 @@ app.controller('homeCtrl', function($scope, SessionService){
     SessionService.logout();
 });
 
-app.controller('loginCtrl', function($scope, $http, LoginService, SessionService){
+app.controller('loginCtrl', function($scope, $http, LoginService, SessionService, md5){
     $scope.error = null;
     SessionService.logout();
     $scope.login = function(user){
+        user.password = md5.createHash(user.password);
         LoginService.login(user, $scope);
     };
 
 });
 
-app.controller('registerCtrl', function($scope, SessionService, LoginService){
+app.controller('registerCtrl', function($scope, SessionService, LoginService, md5){
     $scope.error = null;
     $scope.register = function(user){
+        user.password = md5.createHash(user.password);
         LoginService.register(user, $scope);
     };
 });
