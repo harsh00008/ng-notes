@@ -1,5 +1,4 @@
 var express = require('express');
-var session = require('express-session');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var db = require('./db');
