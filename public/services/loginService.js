@@ -2,6 +2,7 @@
 app.factory('LoginService', function($http, $state, SessionService){
     var user = {
         login: function(user, scope){
+            SessionService.logout();
             var email = user.email;
             var password = user.password;
             if(email && password){

@@ -1,6 +1,3 @@
-/**
- * Created by harshmalewar on 3/30/16.
- */
 app.controller('globalCtrl', function($scope, SessionService){
     $scope.loggedIn = SessionService.isLoggedIn();
     if(SessionService.isLoggedIn){
@@ -33,24 +30,27 @@ app.controller('registerCtrl', function($scope, SessionService, LoginService){
 });
 
 
-app.controller('dashboardCtrl', function($scope, $state, SessionService){
-
-});
-
 app.controller('navbarCtrl', function($scope, SessionService){
     $scope.isUserLoggedIn = SessionService.isLoggedIn();
     console.log($scope.isUserLoggedIn);
 });
 
 app.controller('noteCtrl', function($scope, NotesService){
+    $scope.notes = {};
     $scope.note = {
-        id: 0,
+        id: null,
         title: '',
         text: ''
     };
+    $scope.init = function(){
+        $scope.notes={};
+        NotesService.getAllNotes($scope);
 
-    $scope.notes= [];
-    NotesService.getAllNotes($scope);
+        console.log($scope.notes);
+    };
+    $scope.refreshNotes = function(){
+        NotesService.getAllNotes($scope);
+    };
 
     $scope.showNote = function(note){
         $scope.note.id = note.id;
@@ -59,14 +59,13 @@ app.controller('noteCtrl', function($scope, NotesService){
     };
 
     $scope.newNote = function(){
-        NotesService.newNote();
+        NotesService.newNote($scope);
         NotesService.getAllNotes($scope);
     };
 
     $scope.saveNote = function(note){
-        console.log(note);
-    }
-
+        NotesService.updateNote(note, $scope);
+    };
 
 
 });

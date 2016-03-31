@@ -80,10 +80,12 @@ app.post('/api/v1/register', function(req,res){
 app.get('/api/v1/notes', function(req,res){
 
     var token = req.headers.authorization;
+
     try {
         var decoded = jwt.verify(token, secret);
         var userId = decoded.id;
         var email = decoded.email;
+        console.log(userId);
         User.findOne({
             where: {
                 email: email,
@@ -132,14 +134,30 @@ app.put('/api/v1/notes/:id', function(req, res){
                 res.status(400).send("Invalid request");
             }
         }).then(function(user){
-            Note.findOne({
-                id: noteId
+            Note.find({
+                where:{
+                    id: noteId,
+                    userId: user.userid
+                }
             }).then(function(note){
                 if(note){
+                    var name = req.body.title;
+                    console.log(name);
+                    name = name?  name: 'Untitled';
+                    var noteText = req.body.text;
+                    noteText = noteText? noteText: 'Click to edit me'
                     note.updateAttributes({
+                        name: name,
+                        note: noteText,
+                        userId: user.userid
 
+                    }).then(function(note){
+                        if(note){
+                            res.status(200).send(note);
+                        }else{
+                            res.status(400).send();
+                        }
                     });
-                    res.status(200).send();
                 }else{
                     res.status(400).send('Could not create note. Try again!');
                 }

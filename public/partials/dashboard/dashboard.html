@@ -1,9 +1,6 @@
 <div ng-include="navUrl"></div>
 
-<div ng-controller="dashboardCtrl">
-
-</div>
-<div class="container-fluid" ng-controller="noteCtrl">
+<div class="container-fluid" ng-controller="noteCtrl" ng-init="init()">
 
     <div class="col-md-3 col">
         <h3>Notes <button type="button" class="btn btn-primary" ng-click="newNote()">New</button></h3>
@@ -17,7 +14,7 @@
     <div class="col-md-9 col">
         <h3>Note</h3>
         <section class="row">
-            <input type="text" ng-hide="true" ng-model="note.id">
+            <input type="text" placeholder="title" ng-hide="true" ng-model="note.id">
             <input type="text" class="form-control" ng-model="note.title" ng-blur="saveNote(note)"><hr>
             <div class="large-12 columns" meditor ng-model="note.text" deep-blur="saveNote(note)">
 
@@ -29,6 +26,4 @@
     </div>
 
 </div>
-
-
 
