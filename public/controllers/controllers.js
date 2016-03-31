@@ -42,6 +42,12 @@ app.controller('noteCtrl', function($scope, NotesService){
         title: '',
         text: ''
     };
+
+    $scope.deleteNote = function(noteId){
+        NotesService.deleteNote(noteId);
+        $scope.refreshNotes();
+    };
+
     $scope.init = function(){
         $scope.notes={};
         NotesService.getAllNotes($scope);

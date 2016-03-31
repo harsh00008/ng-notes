@@ -7,13 +7,16 @@
 
 
         <ul class="list-group">
-            <li class="list-group-item note-item" ng-click="showNote(n)" ng-repeat="n in notes">{{n.name}}</li>
+            <li class="list-group-item note-item" ng-repeat="n in notes">
+                <span class="note-title" ng-click="showNote(n)">{{n.name}}</span>
+                <span ng-click="deleteNote(n.id)" class="badge"><i class="glyphicon glyphicon-trash"></i></span>
+            </li>
         </ul>
     </div>
 
     <div class="col-md-9 col">
         <h3>Note</h3>
-        <section class="row">
+        <section class="row note-container">
             <input type="text" placeholder="title" ng-hide="true" ng-model="note.id">
             <input type="text" class="form-control" ng-model="note.title" ng-blur="saveNote(note)"><hr>
             <div class="large-12 columns" meditor ng-model="note.text" deep-blur="saveNote(note)">

@@ -1,4 +1,4 @@
-app.service('SessionService', function($window,jwtHelper){
+app.service('SessionService', function($window,jwtHelper, $state){
 
     this.setLoggedIn = function(value){
         $window.localStorage.setItem('token',value);
@@ -18,5 +18,6 @@ app.service('SessionService', function($window,jwtHelper){
 
     this.logout = function(){
         $window.localStorage.clear();
+
     }
 });
