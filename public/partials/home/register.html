@@ -14,12 +14,13 @@
             {{message}}
         </div>
 
-        <form ng-submit="register(user)">
+        <form name="registrationForm" ng-submit="register(user)">
             <div class="form-group">
+                <span class="error" ng-show="registrationForm.input.$error.required">Required!</span>
                 <label for="email">Email:</label> <input placeholder="Email Address" type="email" id="email" class="form-control" required ng-model="user.email">
             </div>
             <div class="form-group">
-                <label for="password">Password:</label> <input placeholder="Password" type="password" id="password" class="form-control" required ng-model="user.password">
+                <label for="password">Password:</label> <input pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="Lowercase, Uppercase, Number and atleast 8 characters" placeholder="Password" type="password" id="password" class="form-control" required ng-model="user.password">
             </div>
             <div class="form-group">
                 <label for="repassword">Again:</label> <input type="password" placeholder="Password again" id="repassword" class="form-control" required ng-model="user.repassword">

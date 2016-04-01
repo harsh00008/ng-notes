@@ -26,12 +26,15 @@ app.controller('loginCtrl', function($scope, $http, LoginService, SessionService
 app.controller('registerCtrl', function($scope, SessionService, LoginService, md5){
     $scope.error = null;
     $scope.register = function(user){
-        user.password = md5.createHash(user.password);
-        LoginService.register(user, $scope);
+        if(user.password!=user.repassword){
+            $scope.error = 'Passwords do not match';
+        }else{
+            user.password = md5.createHash(user.password);
+            LoginService.register(user, $scope);
+        }
+
     };
-
 });
-
 
 app.controller('navbarCtrl', function($scope, SessionService){
     $scope.isUserLoggedIn = SessionService.isLoggedIn();
