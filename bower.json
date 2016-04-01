@@ -1,0 +1,22 @@
+{
+  "name": "ng-notes",
+  "description": "Simple project for notes",
+  "main": "server.js",
+  "authors": [
+    "Harsh Malewar"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/harsh00008/ng-notes",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-md5": "^0.1.10"
+  }
+}
