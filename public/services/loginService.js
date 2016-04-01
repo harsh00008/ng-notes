@@ -12,7 +12,6 @@ app.factory('LoginService', function($http, $state, SessionService){
                 });
                 $http.post('/api/v1/login', json).then(function(data){
                     SessionService.setLoggedIn(true);
-                    console.log(data);
                     var token = data.data.token;
                     SessionService.setLoggedIn(token);
                     $state.go('dashboard');

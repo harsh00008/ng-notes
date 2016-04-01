@@ -20,14 +20,12 @@ router.post('/api/v1/login', function(req, res){
 
     var email = req.body.email;
     var pass = req.body.password;
-    console.log(email + ''  + pass);
     User.findOne({
         where: {
             email: email,
             password: pass
         }
     }).then(function(user){
-        console.log(user);
         if(user){
 
             if(!user.token){
@@ -60,7 +58,6 @@ router.post('/api/v1/register', function(req,res){
             if(user){
                 res.status(200).send({message: 'User successfully registered!'});
             }else{
-                console.log('Got registration reques3');
                 res.status(400).send({error: 'Could not register the user'});
             }
         }).catch(function(err){
@@ -78,7 +75,6 @@ router.get('/api/v1/notes', function(req,res){
         var decoded = jwt.verify(token, secret);
         var userId = decoded.id;
         var email = decoded.email;
-        console.log(userId);
         User.findOne({
             where: {
                 email: email,
@@ -86,7 +82,6 @@ router.get('/api/v1/notes', function(req,res){
             }
         }).then(function(user){
             if(user){
-                console.log(JSON.stringify(user));
                 Note.findAll({
                     where: {
                         userId: user.userid
@@ -135,7 +130,6 @@ router.put('/api/v1/notes/:id', function(req, res){
             }).then(function(note){
                 if(note){
                     var name = req.body.title;
-                    console.log(name);
                     name = name?  name: 'Untitled';
                     var noteText = req.body.text;
                     noteText = noteText? noteText: 'Click to edit me'

@@ -44,7 +44,6 @@ var Note = db.define('note',{
 
 Note.belongsTo(User,{foreignKey: 'userId'});
 
-console.log('syncinc');
 db.sync();
 
 
