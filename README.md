@@ -8,13 +8,13 @@ Requirements:
 
 
 To run the application:
-1. Install all the dependencies with npm
+
+- Install all the dependencies with npm
 ```
 npm install
 ```
 
-2. Update mysql database connection in the following file
-[a link](https://github.com/harsh00008/ng-notes/blob/master/logic/db/connection.js)
+- Update mysql database connection in [connection.js](https://github.com/harsh00008/ng-notes/blob/master/logic/db/connection.js)
 
 
 To start the application
@@ -23,5 +23,5 @@ npm start
 ```
 
 The application will run on port 8000
-[a link](http://127.0.0.1:8000/)
+localhost:8000
 
