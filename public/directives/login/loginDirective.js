@@ -1,5 +1,6 @@
 app.directive('loginForm', function(){
     return {
-        templateUrl: './directives/login/loginView.html'
+        templateUrl: './directives/login/loginView.html',
+        controller: 'loginCtrl'
     };
 });

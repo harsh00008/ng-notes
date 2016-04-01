@@ -1,17 +1,9 @@
 var mysql = require('mysql');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('app_db','root','',{
-    host: 'localhost',
-    dialect: 'mysql',
-    pool: {
-        max: 5,
-        min : 0,
-        idle: 1000
-    }
-});
+var database = require('./connection').database;
+var db = new Sequelize(database.name, database.username,database.password, database.connection);
 
-
-var User = sequelize.define('user',{
+var User = db.define('user',{
     userid:{
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -38,7 +30,7 @@ var User = sequelize.define('user',{
     }
 });
 
-var Note = sequelize.define('note',{
+var Note = db.define('note',{
     name: {
         type: Sequelize.STRING
     },
@@ -52,10 +44,10 @@ var Note = sequelize.define('note',{
 
 Note.belongsTo(User,{foreignKey: 'userId'});
 
-sequelize.sync();
+console.log('syncinc');
+db.sync();
 
 
-//export
 module.exports = {
     getSequelize: function(){return Sequelize;},
     getUser : function(){ return User;},

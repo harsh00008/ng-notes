@@ -15,7 +15,22 @@ app.service('SessionService', function($window,jwtHelper, $state){
         }
 
     };
-
+    this.getUser = function(){
+        try{
+            var token = $window.localStorage.getItem('token');
+            var decodedToken = jwtHelper.decodeToken(token);
+            if(token && !jwtHelper.isTokenExpired(token) && decodedToken){
+                return {
+                    name: decodedToken.name,
+                    email: decodedToken.email
+                };
+            }else{
+                $state.go('logout');
+            }
+        }catch(err){
+            $state.go('logout');
+        }
+    };
     this.logout = function(){
         $window.localStorage.clear();
 

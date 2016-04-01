@@ -34,7 +34,7 @@ app.controller('registerCtrl', function($scope, SessionService, LoginService, md
 
 app.controller('navbarCtrl', function($scope, SessionService){
     $scope.isUserLoggedIn = SessionService.isLoggedIn();
-    console.log($scope.isUserLoggedIn);
+    $scope.name = SessionService.getUser().name;
 });
 
 app.controller('noteCtrl', function($scope, NotesService){

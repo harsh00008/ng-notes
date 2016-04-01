@@ -10,8 +10,8 @@ To run the application, first install all the dependencies
 npm install
 ```
 
-To run the server
+To run the application
 ```
-node server.js
+npm start
 ```
 
