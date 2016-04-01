@@ -14,7 +14,8 @@ app.config(function($stateProvider, $urlRouterProvider){
         })
         .state('register', {
             url: '/register',
-            templateUrl: 'partials/home/register.html'
+            templateUrl: 'partials/home/register.html',
+            controller: 'registerCtrl'
         })
         .state('dashboard',{
             url : '/dashboard',
@@ -23,6 +24,10 @@ app.config(function($stateProvider, $urlRouterProvider){
         })
         .state('logout',{
             url: '/login'
+        })
+        .state('about',{
+            url:'/about',
+            templateUrl: 'partials/home/about.html'
         });
 
 

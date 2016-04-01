@@ -1,7 +1,7 @@
 <div ng-include src="'./partials/common/header.html'"></div>
-
-    <h1>Register</h1>
-    <div ng-controller="registerCtrl">
+<div class="container">
+    <h1><i class="glyphicon glyphicon-user"></i> Register</h1>
+    <div class="col-md-6 login-wrapper">
         <div ng-show="error" class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Error:</span>
@@ -15,10 +15,26 @@
         </div>
 
         <form ng-submit="register(user)">
-            Email: <input type="email" required ng-model="user.email">
-            Password: <input type="password" required ng-model="user.password">
-            Name: <input type="text" required ng-model="user.name">
-            <input type="submit" value="Register">
-        </form>
+            <div class="form-group">
+                <label for="email">Email:</label> <input placeholder="Email Address" type="email" id="email" class="form-control" required ng-model="user.email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label> <input placeholder="Password" type="password" id="password" class="form-control" required ng-model="user.password">
+            </div>
+            <div class="form-group">
+                <label for="repassword">Again:</label> <input type="password" placeholder="Password again" id="repassword" class="form-control" required ng-model="user.repassword">
+            </div>
+            <div class="form-group">
+                <label for="fullname">Full Name:</label> <input type="text" id="fullname" placeholder="Your name" class="form-control" required ng-model="user.name">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary login-btn">
+            </div>
 
+        </form>
     </div>
+
+
+</div>
+
+<div ng-include src="'./partials/common/footer.html'"></div>

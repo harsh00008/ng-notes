@@ -1,32 +1,37 @@
 <div ng-include="navUrl"></div>
 
 <div class="container-fluid" ng-controller="noteCtrl" ng-init="init()">
+    <div class="row">
 
-    <div class="col-md-3 col">
-        <h3>Notes <button type="button" class="btn btn-primary" ng-click="newNote()">New</button></h3>
+        <div class="col-md-3 col">
+            <h3 class="note-section-title">Notes
+                <button type="button" class="btn btn-primary pull-right" ng-click="newNote()"><i class="glyphicon glyphicon-plus"></i> New Note</button></h3>
+            <ul class="list-group">
+                <li class="list-group-item note-item" ng-repeat="n in notes">
+                    <span class="note-title" ng-click="showNote(n)"><i class="glyphicon glyphicon-pencil"></i> {{n.name}}</span>
+                    <span ng-click="deleteNote(n.id)" class="badge"><i class="glyphicon glyphicon-trash"></i></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-9 col" ng-show="activity">
+            <h3>Edit Note</h3>
+            <section class="note-container" >
+                <input type="text" placeholder="title" ng-hide="true" ng-model="note.id" ">
+                <input type="text" class="form-control" ng-model="note.title" ng-blur="saveNote(note)" maxlength="100"><hr>
+                <div class="large-12 columns" meditor ng-model="note.text" deep-blur="saveNote(note)">
+
+                </div>
+            </section>
+        </div>
+        <div class="jumbotron col-md-9 col welcome-message" ng-hide="activity">
+            <h2>Welcome {{name}}</h2>
+            <p>Click on a note or create a new note to get started :-)</p>
+        </div>
 
 
-        <ul class="list-group">
-            <li class="list-group-item note-item" ng-repeat="n in notes">
-                <span class="note-title" ng-click="showNote(n)">{{n.name}}</span>
-                <span ng-click="deleteNote(n.id)" class="badge"><i class="glyphicon glyphicon-trash"></i></span>
-            </li>
-        </ul>
     </div>
 
-    <div class="col-md-9 col">
-        <h3>Note</h3>
-        <section class="row note-container">
-            <input type="text" placeholder="title" ng-hide="true" ng-model="note.id">
-            <input type="text" class="form-control" ng-model="note.title" ng-blur="saveNote(note)"><hr>
-            <div class="large-12 columns" meditor ng-model="note.text" deep-blur="saveNote(note)">
-
-            </div>
-
-
-
-        </section>
-    </div>
 
 </div>
 

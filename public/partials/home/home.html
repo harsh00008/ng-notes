@@ -1,4 +1,48 @@
 <div ng-include src="'./partials/common/header.html'"></div>
-<div ng-controller="homeCtrl">
-    <h1>Welcome to my application</h1>
+<div ng-controller="homeCtrl" class="container">
+    <div class="row">
+        <h1>Welcome to my note application</h1>
+        <p class="text-center">This application is made for demo purposes. I have developed it with the following technologies:</p>
+        <div class="col-md-4 col">
+            <p>
+
+            <h2>Stack</h2>
+            <ul>
+                <li><h4>Node.js</h4> For the backend server </li>
+                <li><h4>Express.js</h4> Web framework </li>
+                <li><h4>Angular.js</h4> User interface for single page application </li>
+                <li><h4>Sequelize.js</h4> The ORM for mysql database</li>
+            </ul>
+
+            </p>
+        </div>
+        <div class="col-md-4 col">
+            <p>
+            <h2>User Interface</h2>
+            <ul>
+                <li><h4>HTML5</h4> For the website markup </li>
+                <li><h4>CSS3</h4> To beautify the design </li>
+                <li><h4>Twitter Bootstrap</h4> The awesome library for responsive and beautiful web applications</li>
+                <li><h4>SASS</h4> To write CSS peacefully </li>
+            </ul>
+            </p>
+            <hr>
+            <a href="https://github.com/harsh00008/ng-notes" target="_blank" title="My github code" class="center-block btn btn-primary btn-lg">My Code</a>
+
+        </div>
+        <div class="col-md-4 col">
+            <h2>Other stuff</h2>
+            <p>
+            <ul>
+                <li><h4>JWT</h4> Token based RESTful interaction between the frontend and the backend </li>
+                <li><h4>Angular Meditor</h4> Simple rich text editor for editing and writing notes </li>
+
+            </ul>
+            </p>
+        </div>
+
+
+    </div>
+
 </div>
+<div ng-include src="'./partials/common/footer.html'"></div>

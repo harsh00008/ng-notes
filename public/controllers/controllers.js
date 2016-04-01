@@ -29,6 +29,7 @@ app.controller('registerCtrl', function($scope, SessionService, LoginService, md
         user.password = md5.createHash(user.password);
         LoginService.register(user, $scope);
     };
+
 });
 
 
@@ -37,24 +38,27 @@ app.controller('navbarCtrl', function($scope, SessionService){
     $scope.name = SessionService.getUser().name;
 });
 
-app.controller('noteCtrl', function($scope, NotesService){
+app.controller('noteCtrl', function($scope, NotesService, SessionService){
     $scope.notes = {};
     $scope.note = {
         id: null,
         title: '',
         text: ''
     };
+    $scope.name = {};
+    $scope.activity = false;
+
+    $scope.name = SessionService.getUser().name;
 
     $scope.deleteNote = function(noteId){
         NotesService.deleteNote(noteId);
         $scope.refreshNotes();
+        $scope.activity = false;
     };
 
     $scope.init = function(){
         $scope.notes={};
         NotesService.getAllNotes($scope);
-
-        console.log($scope.notes);
     };
     $scope.refreshNotes = function(){
         NotesService.getAllNotes($scope);
@@ -64,6 +68,7 @@ app.controller('noteCtrl', function($scope, NotesService){
         $scope.note.id = note.id;
         $scope.note.text = note.note;
         $scope.note.title = note.name;
+        $scope.activity = true;
     };
 
     $scope.newNote = function(){
