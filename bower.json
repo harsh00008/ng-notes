@@ -17,6 +17,7 @@
     "tests"
   ],
   "dependencies": {
+    "angular-md5": "^0.1.10",
     "angular-meditor": "^1.4.2",
     "angular-deep-blur": "^1.0.9"
   },
