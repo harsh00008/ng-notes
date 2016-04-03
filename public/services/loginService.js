@@ -10,7 +10,7 @@ app.factory('LoginService', function($http, $state, SessionService){
                     email: user.email,
                     password: user.password
                 });
-                $http.post('/api/v1/login', json).then(function(data){
+                return $http.post('/api/v1/login', json).then(function(data){
                     SessionService.setLoggedIn(true);
                     var token = data.data.token;
                     SessionService.setLoggedIn(token);

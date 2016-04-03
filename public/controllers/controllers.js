@@ -16,7 +16,7 @@ app.controller('homeCtrl', function($scope, SessionService){
 app.controller('loginCtrl', function($scope, $http, LoginService, SessionService, md5){
     $scope.error = null;
     SessionService.logout();
-    $scope.login = function(user){
+    $scope.login = function (user){
         user.password = md5.createHash(user.password);
         LoginService.login(user, $scope);
     };
