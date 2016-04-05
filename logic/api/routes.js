@@ -17,9 +17,9 @@ router.get('/api/test', function(req, res){
 
 
 router.post('/api/v1/login', function(req, res){
-
     var email = req.body.email;
     var pass = req.body.password;
+    res.setHeader('Content-Type','application/json');
     User.findOne({
         where: {
             email: email,
@@ -27,18 +27,26 @@ router.post('/api/v1/login', function(req, res){
         }
     }).then(function(user){
         if(user){
-
+            var token = '';
             if(!user.token){
                 token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
                 user.updateAttributes({
                     token: token
                 });
+                res.status(200).send({token: token});
             }else{
-                token = user.token;
+                jwt.verify(token, secret,function(err, decoded){
+                     if(err){
+                         token = token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
+                     }else{
+                         token = user.token;
+                     }
+                    res.status(200).send({token: token});
+                });
             }
-            res.setHeader('Content-Type','application/json');
-            res.status(200).send({token: token});
+
         }else{
+
             res.status(400).send({error: 'Invalid login. Email or password do not match.'});
         }
     });

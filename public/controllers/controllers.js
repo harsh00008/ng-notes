@@ -13,14 +13,23 @@ app.controller('homeCtrl', function($scope, SessionService){
     SessionService.logout();
 });
 
-app.controller('loginCtrl', function($scope, $http, LoginService, SessionService, md5){
+app.controller('loginCtrl', function($scope, $http, LoginService, SessionService, md5, $state){
     $scope.error = null;
     SessionService.logout();
-    $scope.login = function (user){
-        user.password = md5.createHash(user.password);
-        LoginService.login(user, $scope);
-    };
 
+    $scope.login = function (user){
+        if(user.email && user.password){
+            user.password = md5.createHash(user.password);
+            LoginService.login(user).then(function(data){
+                SessionService.setLoggedIn(data.data.token);
+                $state.go('dashboard');
+            },function(error){
+                $scope.error = error.data.error;
+            });
+        }else{
+            $scope.error="Please fill in the form completely";
+        }
+    };
 });
 
 app.controller('registerCtrl', function($scope, SessionService, LoginService, md5){
@@ -30,7 +39,11 @@ app.controller('registerCtrl', function($scope, SessionService, LoginService, md
             $scope.error = 'Passwords do not match';
         }else{
             user.password = md5.createHash(user.password);
-            LoginService.register(user, $scope);
+            LoginService.register(user).then(function(data){
+                $scope.message = 'Successfully registered!';
+            }, function(error){
+                $scope.error = error;
+            });
         }
 
     };
@@ -41,7 +54,7 @@ app.controller('navbarCtrl', function($scope, SessionService){
     $scope.name = SessionService.getUser().name;
 });
 
-app.controller('noteCtrl', function($scope, NotesService, SessionService){
+app.controller('noteCtrl', function($scope, NotesService, SessionService, $state){
     $scope.notes = {};
     $scope.note = {
         id: null,
@@ -54,17 +67,34 @@ app.controller('noteCtrl', function($scope, NotesService, SessionService){
     $scope.name = SessionService.getUser().name;
 
     $scope.deleteNote = function(noteId){
-        NotesService.deleteNote(noteId);
-        $scope.refreshNotes();
+        NotesService.deleteNote(noteId).then(function(data){
+            $scope.refreshNotes();
+        },function(error){
+            if(error.status == 401){
+                $state.go('logout');
+            }
+        });
         $scope.activity = false;
     };
 
     $scope.init = function(){
         $scope.notes={};
-        NotesService.getAllNotes($scope);
+        NotesService.getAllNotes().then(function(data){
+            $scope.notes = data.data;
+        },function(error){
+            if(error.status == 401){
+                $state.go('logout');
+            }
+        });
     };
     $scope.refreshNotes = function(){
-        NotesService.getAllNotes($scope);
+        NotesService.getAllNotes().then(function(data){
+            $scope.notes = data.data;
+        },function(error){
+            if(error.status == 401){
+                $state.go('logout');
+            }
+        });
     };
 
     $scope.showNote = function(note){
@@ -75,13 +105,23 @@ app.controller('noteCtrl', function($scope, NotesService, SessionService){
     };
 
     $scope.newNote = function(){
-        NotesService.newNote($scope);
-        NotesService.getAllNotes($scope);
+        NotesService.newNote().then(function(data){
+            $scope.refreshNotes();
+        },function(error){
+            if(error.status == 401){
+                $state.go('logout');
+            }
+        });
     };
 
     $scope.saveNote = function(note){
-        NotesService.updateNote(note, $scope);
+        NotesService.updateNote(note).then(function(data){
+            $scope.refreshNotes();
+        },function(error){
+            if(error.status == 401){
+                $state.go('logout');
+            };
+        });
     };
-
 
 });

@@ -34,7 +34,7 @@ app.config(function($stateProvider, $urlRouterProvider){
 });
 
 app.run(function($state, $rootScope,$http, $window, SessionService){
-    $rootScope.$on('$stateChangeStart', function(event, currentRoute, previousRoute){
+    $rootScope.$on('$stateChangeStart', function(event, currentRoute){
         if(!SessionService.isLoggedIn() && currentRoute.authentication){
             event.preventDefault();
             $state.go('login');
