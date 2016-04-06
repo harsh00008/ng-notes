@@ -42,7 +42,7 @@ app.controller('registerCtrl', function($scope, SessionService, LoginService, md
             LoginService.register(user).then(function(data){
                 $scope.message = 'Successfully registered!';
             }, function(error){
-                $scope.error = error;
+                $scope.error = error.error;
             });
         }
 

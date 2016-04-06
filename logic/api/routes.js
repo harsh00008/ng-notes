@@ -27,28 +27,30 @@ router.post('/api/v1/login', function(req, res){
         }
     }).then(function(user){
         if(user){
-            var token = '';
-            if(!user.token){
-                token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
-                user.updateAttributes({
-                    token: token
-                });
-                res.status(200).send({token: token});
-            }else{
-                jwt.verify(token, secret,function(err, decoded){
-                     if(err){
-                         token = token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
-                     }else{
-                         token = user.token;
-                     }
-                    res.status(200).send({token: token});
-                });
-            }
-
+            return user;
         }else{
-
             res.status(400).send({error: 'Invalid login. Email or password do not match.'});
         }
+    }).then(function(user){
+        var token = '';
+        if(!user.token){
+            token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
+            user.updateAttributes({
+                token: token
+            });
+            res.status(200).send({token: token});
+        }else{
+            jwt.verify(token, secret,function(err, decoded){
+                if(err){
+                    token = token = jwt.sign({ id: user.userid, name: user.name, email: user.email },secret,{expiresIn: '2 days'});
+                }else{
+                    token = user.token;
+                }
+                res.status(200).send({token: token});
+            });
+        }
+    }, function(error){
+        res.status(400).send({error: "Some problem. Please try again"});
     });
 });
 
@@ -90,21 +92,25 @@ router.get('/api/v1/notes', function(req,res){
             }
         }).then(function(user){
             if(user){
-                Note.findAll({
-                    where: {
-                        userId: user.userid
-                    },
-                    attribute:['id','name']
-                }).then(function(notes){
-                    if(notes){
-                        res.json(notes);
-                    }else{
-                        res.status(204).send();
-                    }
-                });
+                return user;
             }else{
                 res.status(401).send("Invalid request");
             }
+        }).then(function(user){
+            Note.findAll({
+                where: {
+                    userId: user.userid
+                },
+                attribute:['id','name']
+            }).then(function(notes){
+                if(notes){
+                    res.json(notes);
+                }else{
+                    res.status(204).send();
+                }
+            });
+        }, function(error){
+            res.send(400).send({error: 'Some problem getting notes. Please try again.'});
         });
     } catch(err) {
         res.status(401).send("Invalid token");
@@ -137,25 +143,29 @@ router.put('/api/v1/notes/:id', function(req, res){
                 }
             }).then(function(note){
                 if(note){
-                    var name = req.body.title;
-                    name = name?  name: 'Untitled';
-                    var noteText = req.body.text;
-                    noteText = noteText? noteText: 'Click to edit me'
-                    note.updateAttributes({
-                        name: name,
-                        note: noteText,
-                        userId: user.userid
-
-                    }).then(function(note){
-                        if(note){
-                            res.status(200).send(note);
-                        }else{
-                            res.status(400).send();
-                        }
-                    });
+                    return note;
                 }else{
-                    res.status(400).send('Could not create note. Try again!');
+                    res.status(400).send('Could not update note. Try again!');
                 }
+            }).then(function(note){
+                var name = req.body.title;
+                name = name?  name: 'Untitled';
+                var noteText = req.body.text;
+                noteText = noteText? noteText: 'Click to edit me'
+                note.updateAttributes({
+                    name: name,
+                    note: noteText,
+                    userId: user.userid
+
+                }).then(function(note){
+                    if(note){
+                        res.status(200).send(note);
+                    }else{
+                        res.status(400).send();
+                    }
+                });
+            }, function(error){
+                res.status(400).send('Could not update note. Try again!');
             });
         });
     } catch(err) {
