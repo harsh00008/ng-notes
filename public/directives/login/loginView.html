@@ -7,6 +7,12 @@
             <span class="sr-only">Error:</span>
             {{error}}
         </div>
+        <div class="text-center">
+            <p><strong>Email: </strong>user@mail.com</p>
+            <p><strong>Password: </strong>Password!</p>
+
+        </div>
+
         <form ng-submit="login(user)">
             <div class="form-group">
                 <label for="email">Email: </label> <input type="email" placeholder="Email address" class="form-control" id="email" required ng-model="user.email">
